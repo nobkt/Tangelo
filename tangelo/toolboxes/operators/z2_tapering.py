@@ -178,6 +178,6 @@ def get_eigenvalues(symmetries, n_qubits, n_electrons, spin, mapping, up_then_do
         symmetries = np.reshape(symmetries, (-1, len(symmetries)))
 
     each_qubit = np.einsum("ij,j->ij", symmetries[:, n_qubits:].astype(bool), psi_init)
-    eigenvalues = np.product(-2 * each_qubit + 1, axis=1)
+    eigenvalues = np.prod(-2 * each_qubit + 1, axis=1)
 
     return eigenvalues

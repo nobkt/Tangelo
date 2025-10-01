@@ -13,6 +13,9 @@
 # limitations under the License.
 
 import unittest
+import pytest
+
+pytest.importorskip("pyqsp")
 
 import numpy as np
 from scipy.linalg import expm

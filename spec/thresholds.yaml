@@ -1,0 +1,108 @@
+# DLPNO-CCSD(T) Threshold Configuration
+# Version: 0.1.0 (Phase1 baseline)
+# DO NOT modify these values without updating SPEC_VERSION and spec/spec.md
+
+# Pair Classification Threshold
+T_CutPairs:
+  value: 1.0e-4
+  unit: "Hartree"
+  description: "Energy cutoff for strong vs weak pair classification"
+  justification: "Pairs with estimated MP2 correlation energy below this threshold are treated as weak pairs (MP2-level or neglected). Based on ORCA DLPNO-CCSD(T) NormalPNO defaults."
+  monotonic: false  # Single value (not a sequence)
+
+# PNO Truncation Threshold
+T_CutPNO:
+  value: 1.0e-7
+  unit: "dimensionless"
+  description: "Eigenvalue threshold for PNO truncation"
+  justification: "Natural orbitals with occupation numbers below this threshold are discarded. Controls virtual space completeness. Matches ORCA NormalPNO tier."
+  monotonic: false
+
+# Distant Orbital Cutoff
+T_CutDO:
+  value: 5.0e-3
+  unit: "dimensionless"
+  description: "Mulliken population threshold for distant orbital removal"
+  justification: "Virtual orbitals with Mulliken population below this threshold in a given pair domain are removed. Reduces computational cost without significant accuracy loss."
+  monotonic: false
+
+# CCSD Residual Convergence Threshold
+T_CutResid:
+  value: 1.0e-7
+  unit: "dimensionless"
+  description: "L2 norm threshold for CCSD amplitude residual convergence"
+  justification: "Iterative CCSD amplitude equations are considered converged when the residual norm falls below this value. Balances accuracy and iteration count."
+  monotonic: false
+
+# Maximum CCSD Iterations
+MaxIter_CCSD:
+  value: 50
+  unit: "iterations"
+  description: "Maximum number of CCSD amplitude update iterations"
+  justification: "Prevents runaway calculations in case of convergence failure. Typical CCSD calculations converge within 20-30 iterations."
+  monotonic: false
+  type: integer
+
+# DIIS Start Iteration
+DIIS_Start:
+  value: 2
+  unit: "iteration"
+  description: "Iteration number to begin DIIS extrapolation"
+  justification: "DIIS (Direct Inversion in Iterative Subspace) accelerates convergence. Starting at iteration 2 allows initial amplitude buildup before extrapolation."
+  monotonic: false
+  type: integer
+
+# DIIS Vector Retention
+DIIS_Keep:
+  value: 8
+  unit: "vectors"
+  description: "Number of previous error vectors to retain for DIIS extrapolation"
+  justification: "Maintains balance between memory usage and extrapolation stability. 6-10 vectors is standard in quantum chemistry codes."
+  monotonic: false
+  type: integer
+
+# Threshold Sequences for Extrapolation (Phase9)
+# Note: These sequences MUST be strictly decreasing (validated at import time in config.py)
+PNO_TAU_SEQUENCE:
+  values: [1.0e-4, 7.0e-5, 5.0e-5, 3.5e-5, 2.5e-5]
+  unit: "dimensionless"
+  description: "Sequence of PNO truncation thresholds for systematic refinement"
+  justification: "Enables extrapolation to complete PNO limit (CBS-like behavior). Sequence mirrors ORCA TightPNO progression."
+  monotonic: true  # MUST be strictly decreasing
+
+PAIR_TAU_SEQUENCE:
+  values: [1.0e-6, 5.0e-7, 2.0e-7]
+  unit: "Hartree"
+  description: "Sequence of pair classification thresholds for convergence study"
+  justification: "Allows systematic study of pair approximation impact. Coarser than PNO threshold as pair classification is less sensitive."
+  monotonic: true  # MUST be strictly decreasing
+
+# Energy Convergence Tolerances
+ENERGY_ABS_TOL:
+  value: 1.0e-6
+  unit: "Hartree"
+  description: "Absolute energy convergence threshold for iterative methods"
+  justification: "Target accuracy of 1 microhartree (~0.6 kcal/mol) is appropriate for chemical accuracy benchmarks."
+  monotonic: false
+
+ENERGY_REL_TOL:
+  value: 5.0e-7
+  unit: "dimensionless"
+  description: "Relative energy convergence threshold (fractional change)"
+  justification: "Complements absolute tolerance for systems with large correlation energies."
+  monotonic: false
+
+# Random Seed for Deterministic Behavior
+DEFAULT_RANDOM_SEED:
+  value: 20250101
+  unit: "dimensionless"
+  description: "Fixed random seed for reproducible results"
+  justification: "Ensures deterministic behavior in localization algorithms and any stochastic screening procedures."
+  monotonic: false
+  type: integer
+
+# Metadata
+_metadata:
+  spec_version: "0.1.0"
+  last_updated: "2025-01-01"
+  note: "These values are placeholders based on ORCA DLPNO-CCSD(T) NormalPNO defaults. Production tuning will occur in Phase9."

@@ -141,4 +141,14 @@ If you use Tangelo in your research, please cite the `Tangelo release paper <htt
       doi = {10.48550/arXiv.2206.12424}
    }
 
+DLPNO-CCSD(T) Implementation Status
+------------------------------------
+
+The DLPNO-CCSD(T) (Domain-based Local Pair Natural Orbital Coupled Cluster) implementation is under active development:
+
+- **Phase0 (Complete):** Baseline scaffold established with configuration, data structures, convergence monitoring, and testing framework.
+- **Phase1 (Complete):** Formal specification baseline established. See ``spec/spec.md`` for detailed pipeline architecture, invariants, error classes, and accuracy targets. Specification version 0.1.0.
+
+Future phases (Phase2–Phase10) will incrementally implement localization, pair detection, MP2/CCSD/triples kernels, and reproducibility validation. See ``spec/validation_matrix.md`` for the complete roadmap.
+
 © SandboxAQ 2024. This software is released under the Apache Software License version 2.0.

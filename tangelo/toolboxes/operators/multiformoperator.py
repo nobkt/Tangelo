@@ -104,7 +104,7 @@ class MultiformOperator(QubitOperator):
         """Initialize MultiformOperator from an integer operator."""
 
         assert len(factors) == int_op.shape[0], \
-             f"The number of factors ({len(factors)}) must be the same as the number of terms ({int_op.shape[0]})."
+             f"The number of factors ({len(factors)}) must be the same as the number of terms ({int_op.shape[0]})." 
         terms = integer_to_qubit_terms(int_op, factors)
         bin_op = integer_to_binary(int_op)
 
@@ -115,7 +115,7 @@ class MultiformOperator(QubitOperator):
         """Initialize MultiformOperator from a binary operator."""
 
         assert len(factors) == bin_op.shape[0], \
-            f"The number of factors ({len(factors)}) must be the same as the number of terms ({bin_op.shape[0]})."
+            f"The number of factors ({len(factors)}) must be the same as the number of terms ({bin_op.shape[0]})." 
         n_qubits = bin_op.shape[1] // 2
         # The integer array is defined trivially with the binary array.
         int_op = 2 * bin_op[:, :n_qubits].astype(np.int8) + bin_op[:, n_qubits:].astype(np.int8)
@@ -147,7 +147,9 @@ class MultiformOperator(QubitOperator):
         for term_i, integer in enumerate(self.integer):
             new_cs = c_calc[self.integer[term_i], other_operator.integer]
             product[term_i * increment: (term_i + 1) * increment] = integer ^ other_operator.integer
-            factors[term_i * increment: (term_i + 1) * increment] = self.factors[term_i] * other_operator.factors * np.product(new_cs, axis=1)
+            factors[term_i * increment: (term_i + 1) * increment] = (
+                self.factors[term_i] * other_operator.factors * np.prod(new_cs, axis=1)
+            )
 
         product, factors = MultiformOperator.collapse(product, factors)
 
@@ -185,7 +187,7 @@ class MultiformOperator(QubitOperator):
         Args:
             indices (int or list of int): Remove all the terms corresponding to
                 the indices.
-        """
+        """ 
 
         if isinstance(indices, int):
             indices = np.array([indices])
@@ -248,7 +250,7 @@ class MultiformOperator(QubitOperator):
         Returns:
             (array of int, arrays of float): Array of unique integer-encoded
                 Pauli words, their factors in the operator.
-        """
+        """ 
 
         all_terms = np.concatenate((operator, np.linspace(0, len(operator) - 1, len(operator), dtype=int).reshape(len(operator), -1)), axis=1)
 
@@ -350,7 +352,7 @@ def integer_to_binary(integer_op):
     Returns:
         array-like of bool: Array of 0s and 1s representing the operator with
             the stabilizer notation.
-    """
+    """ 
 
     n_terms = integer_op.shape[0]
     n_qubits = integer_op.shape[1]
@@ -376,12 +378,12 @@ def integer_to_qubit_terms(integer_op, factors):
 
     Returns:
         dict: Pauli terms and coefficients.
-    """
+    """ 
 
     qubit_operator = QubitOperator()
     for n_term, term in enumerate(integer_op):
         # Convert integer to a qubit terms (e.g. [0 1 2 3] => ((1, "Z"),
-        # (2, "X"), (3, "Y"))).
+        # (2, "X"), (3, "Y")).
         tuple_term = tuple([(qubit_i, ConvertPauli(int(term[qubit_i])).char) for
                              qubit_i in range(len(term)) if int(term[qubit_i]) > 0])
         # If a term is the same, QubitOperator takes into account the summation.
@@ -402,7 +404,7 @@ def do_commute(hybrid_op_a, hybrid_op_b, term_resolved=False):
     a-vector. We then apply an OR reduction over all of the b-terms to
     identify whether term a_i commutes with all of b_j. Applying once again,
     an OR reduction over all a_i, we get the commutator for the entirety of
-    a,b.
+a,b.
 
     Args:
         hybrid_op_a: First MultiformOperator.
@@ -412,7 +414,7 @@ def do_commute(hybrid_op_a, hybrid_op_b, term_resolved=False):
     Returns:
         bool or array of bool: If the operators commute or array of bool
             describing which terms are commuting.
-    """
+    """ 
 
     term_bool = np.zeros(hybrid_op_a.n_terms, dtype=bool)
 
@@ -426,3 +428,4 @@ def do_commute(hybrid_op_a, hybrid_op_b, term_resolved=False):
         return not np.all(term_bool)
     else:
         return np.logical_not(term_bool)
+

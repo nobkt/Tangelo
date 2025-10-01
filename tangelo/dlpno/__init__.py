@@ -1,15 +1,44 @@
-# Copyright SandboxAQ 2021-2024.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#   http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+"""DLPNO scaffolding package for Tangelo.
 
-"""DLPNO-CCSD(T) package for Tangelo."""
+Re-exports configuration constants, data structures, and monitoring utilities
+needed for the DLPNO-CCSD(T) implementation roadmap. Algorithmic logic is
+intentionally absent at this stage.
+"""
+
+from __future__ import annotations
+
+# Configuration constants
+from .config import (
+    PNO_TAU_SEQUENCE_DEFAULT,
+    PAIR_TAU_SEQUENCE_DEFAULT,
+    ENERGY_ABS_TOL_DEFAULT,
+    ENERGY_REL_TOL_DEFAULT,
+)
+
+# Data structures & helper
+from .structures import (
+    OrbitalSpace,
+    PNOParameters,
+    ConvergenceCriteria,
+    ConvergenceRecord,
+    default_pno_parameters,
+)
+
+# Convergence utilities
+from .convergence import ConvergenceMonitor
+
+__all__ = [
+    # Config constants
+    "PNO_TAU_SEQUENCE_DEFAULT",
+    "PAIR_TAU_SEQUENCE_DEFAULT",
+    "ENERGY_ABS_TOL_DEFAULT",
+    "ENERGY_REL_TOL_DEFAULT",
+    # Data & helper
+    "OrbitalSpace",
+    "PNOParameters",
+    "ConvergenceCriteria",
+    "ConvergenceRecord",
+    "default_pno_parameters",
+    # Monitor
+    "ConvergenceMonitor",
+]

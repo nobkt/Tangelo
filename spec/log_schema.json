@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/nobkt/Tangelo/blob/main/spec/log_schema.json",
+  "title": "DLPNO-CCSD(T) Run Log Schema",
+  "description": "JSON Schema for DLPNO-CCSD(T) calculation run logs ensuring reproducibility and metadata completeness",
+  "type": "object",
+  "required": [
+    "run_uuid",
+    "spec_version",
+    "git_hash",
+    "thresholds",
+    "system",
+    "molecule",
+    "stage",
+    "timestamp_start"
+  ],
+  "properties": {
+    "run_uuid": {
+      "type": "string",
+      "description": "Unique identifier for this calculation run (UUID v4 format recommended)",
+      "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    },
+    "spec_version": {
+      "type": "string",
+      "description": "Version of the DLPNO specification used (semantic versioning)",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "git_hash": {
+      "type": "string",
+      "description": "Git commit hash of the Tangelo codebase used for this run",
+      "pattern": "^[0-9a-fA-F]{7,40}$"
+    },
+    "thresholds": {
+      "type": "object",
+      "description": "Dictionary of threshold values used in this calculation",
+      "required": [
+        "T_CutPairs",
+        "T_CutPNO",
+        "T_CutDO",
+        "T_CutResid"
+      ],
+      "properties": {
+        "T_CutPairs": {
+          "type": "number",
+          "minimum": 0
+        },
+        "T_CutPNO": {
+          "type": "number",
+          "minimum": 0
+        },
+        "T_CutDO": {
+          "type": "number",
+          "minimum": 0
+        },
+        "T_CutResid": {
+          "type": "number",
+          "minimum": 0
+        },
+        "MaxIter_CCSD": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "DIIS_Start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "DIIS_Keep": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "system": {
+      "type": "object",
+      "description": "System identification (molecule name, basis set, method)",
+      "required": [
+        "molecule_name",
+        "basis_set"
+      ],
+      "properties": {
+        "molecule_name": {
+          "type": "string",
+          "description": "Human-readable molecule identifier"
+        },
+        "basis_set": {
+          "type": "string",
+          "description": "Basis set used (e.g., cc-pVDZ, def2-TZVP)"
+        },
+        "charge": {
+          "type": "integer",
+          "description": "Molecular charge"
+        },
+        "spin_multiplicity": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Spin multiplicity (2S+1)"
+        }
+      }
+    },
+    "molecule": {
+      "type": "object",
+      "description": "Molecular geometry and electronic structure information",
+      "required": [
+        "geometry",
+        "n_electrons"
+      ],
+      "properties": {
+        "geometry": {
+          "type": "array",
+          "description": "Atomic coordinates [symbol, x, y, z] in Angstroms or Bohr (specify in units field)",
+          "items": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "prefixItems": [
+              {
+                "type": "string",
+                "description": "Element symbol"
+              },
+              {
+                "type": "number",
+                "description": "x coordinate"
+              },
+              {
+                "type": "number",
+                "description": "y coordinate"
+              },
+              {
+                "type": "number",
+                "description": "z coordinate"
+              }
+            ]
+          }
+        },
+        "n_electrons": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Total number of electrons"
+        },
+        "n_atoms": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of atoms"
+        },
+        "geometry_units": {
+          "type": "string",
+          "enum": ["angstrom", "bohr"],
+          "description": "Units for geometry coordinates"
+        }
+      }
+    },
+    "stage": {
+      "type": "string",
+      "description": "Current pipeline stage",
+      "enum": [
+        "initialization",
+        "localization",
+        "pair_detection",
+        "mp2_density",
+        "pno_construction",
+        "mp2_validation",
+        "ccsd_iteration",
+        "ccsd_validation",
+        "triples_correction",
+        "energy_assembly",
+        "complete"
+      ]
+    },
+    "timestamp_start": {
+      "type": "string",
+      "description": "ISO 8601 timestamp of calculation start",
+      "format": "date-time"
+    },
+    "timestamp_end": {
+      "type": "string",
+      "description": "ISO 8601 timestamp of calculation completion",
+      "format": "date-time"
+    },
+    "energies": {
+      "type": "object",
+      "description": "Energy components (Hartree)",
+      "properties": {
+        "scf_energy": {
+          "type": "number"
+        },
+        "mp2_correlation": {
+          "type": "number"
+        },
+        "ccsd_correlation": {
+          "type": "number"
+        },
+        "triples_correction": {
+          "type": "number"
+        },
+        "total_energy": {
+          "type": "number"
+        }
+      }
+    },
+    "convergence": {
+      "type": "object",
+      "description": "Convergence information",
+      "properties": {
+        "ccsd_converged": {
+          "type": "boolean"
+        },
+        "ccsd_iterations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "final_residual_norm": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "timing": {
+      "type": "object",
+      "description": "Timing breakdown (seconds)",
+      "properties": {
+        "total_time": {
+          "type": "number",
+          "minimum": 0
+        },
+        "localization_time": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pair_detection_time": {
+          "type": "number",
+          "minimum": 0
+        },
+        "pno_construction_time": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ccsd_time": {
+          "type": "number",
+          "minimum": 0
+        },
+        "triples_time": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "description": "Computational environment details",
+      "properties": {
+        "hostname": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "python_version": {
+          "type": "string"
+        },
+        "numpy_version": {
+          "type": "string"
+        },
+        "blas_library": {
+          "type": "string"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional user-defined metadata",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

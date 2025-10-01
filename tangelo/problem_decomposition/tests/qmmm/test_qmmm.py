@@ -14,6 +14,9 @@
 
 import os
 import unittest
+import pytest
+
+pytest.importorskip("rdkit")
 
 from tangelo.algorithms.variational import BuiltInAnsatze
 from tangelo.problem_decomposition.qmmm.qmmm_problem_decomposition import QMMMProblemDecomposition

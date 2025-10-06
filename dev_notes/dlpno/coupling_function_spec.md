@@ -270,6 +270,14 @@ This reference implementation prioritizes **correctness over speed**. Performanc
 
 The following approximations and heuristics are **explicitly prohibited** at this specification layer:
 
+### 9.0 Fallback Behavior
+
+❌ Forbidden:
+```
+No fallback behavior (implicit or explicit) is permitted at any layer; inability to compute C(i,j) must raise an explicit error in implementation.
+```
+**Rationale**: Any attempt to silently substitute, estimate, or default to canonical all-pairs or alternative schemes is prohibited. If input requirements are not met, the implementation must fail explicitly.
+
 ### 9.1 Empirical Distance Scaling
 ❌ Forbidden:
 ```

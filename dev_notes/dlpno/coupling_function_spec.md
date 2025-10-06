@@ -117,7 +117,7 @@ The two-electron integrals obey spatial orbital symmetries:
 These symmetries may be used to reduce storage or computational cost, but **must not alter the numerical result**. The reference implementation should compute the full double sum explicitly unless symmetry reductions are proven equivalent.
 
 ### 4.6 Energy Denominator Sign
-The denominator (ε_i + ε_j - ε_a - ε_b) is strictly positive for canonical RHF orbitals with standard occupations (ε_i < 0, ε_a > 0 typically near HOMO-LUMO gap), ensuring well-defined division. If non-standard orbital energy orderings occur, implementations must detect and raise an error rather than silently producing invalid results.
+The denominator (ε_i + ε_j - ε_a - ε_b) is strictly negative for canonical RHF orbitals with standard occupations (ε_i < 0, ε_a > 0 typically near HOMO-LUMO gap), ensuring well-defined division. If non-standard orbital energy orderings occur, implementations must detect and raise an error rather than silently producing invalid results.
 
 ## 5. Alternative Equivalent Forms
 

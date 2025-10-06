@@ -49,6 +49,10 @@ ConvergenceCriteria
 ConvergenceRecord
 default_pno_parameters
 ConvergenceMonitor
+build_pair_set
+OccupiedPair
+PairSet
+evaluate_coupling_functional
 ```
 
 ---
@@ -58,6 +62,8 @@ ConvergenceMonitor
 - Deterministic configuration constants with strict monotonic validation
 - Dataclasses (no coupled-cluster mathematics)
 - Convergence monitoring logic with absolute + relative + residual criteria
+- **Pair coupling functional C(i,j) = |E_pair^MP2(i,j)| (Phase2-Task2.4)**
+- **Deterministic pair screening using coupling functional**
 - Path / naming helpers (pair keys, iteration directories)
 - Lightweight logging initializer (plain or JSON)
 - Placeholder localization adapter interface
@@ -65,6 +71,9 @@ ConvergenceMonitor
   - Configuration validation & defaults
   - Dataclass instantiation & independence of default lists
   - ConvergenceMonitor basic and edge-case behavior (NaN / inf)
+  - **Coupling functional properties (symmetry, non-negativity, self-null)**
+  - **Pair energy reproduction (H₂O/STO-3G validation)**
+  - **build_pair_set integration and error handling**
   - Path formatting and normalization
   - Logging handler non-duplication and JSON formatting
   - Localization adapter placeholder behavior
@@ -74,7 +83,7 @@ ConvergenceMonitor
 
 ## 5. Out of Scope (Explicitly NOT Implemented Yet)
 
-- Pair detection / domain construction
+- ~~Pair detection / domain construction~~ (Pair screening implemented; domain construction deferred)
 - PNO generation / truncation logic
 - CCSD amplitude iterations or residual evaluations
 - (T) perturbative triples correction
@@ -90,7 +99,7 @@ ConvergenceMonitor
 
 Planned incremental layers (tentative order):
 
-1. Pair list generation & domain screening primitives
+1. ~~Pair list generation & domain screening primitives~~ ✅ **COMPLETE (Phase2-Task2.4)**
 2. Orbital localization backend integration (PySCF) and validation
 3. Virtual space partitioning & PNO construction
 4. CCSD amplitude build skeleton (T1/T2 residual placeholders → full kernels)

@@ -1,0 +1,155 @@
+{
+  "description": "Reference regression dataset for DLPNO coupling functional C(i,j)",
+  "generation_date": "2024-01-01",
+  "spec_version": "1.0",
+  "molecules": [
+    {
+      "molecule_id": "H2",
+      "basis": "sto-3g",
+      "n_occ": 1,
+      "n_virt": 1,
+      "c_values": [],
+      "e_corr_total": 0.0,
+      "regression_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "spec_version": "1.0"
+    },
+    {
+      "molecule_id": "H2O",
+      "basis": "sto-3g",
+      "n_occ": 5,
+      "n_virt": 2,
+      "c_values": [
+        {
+          "i": 0,
+          "j": 1,
+          "value": 1.6618681052881916e-05
+        },
+        {
+          "i": 0,
+          "j": 2,
+          "value": 8.171054711009498e-06
+        },
+        {
+          "i": 0,
+          "j": 3,
+          "value": 7.858713880622612e-06
+        },
+        {
+          "i": 0,
+          "j": 4,
+          "value": 1.6600794584948036e-36
+        },
+        {
+          "i": 1,
+          "j": 2,
+          "value": 0.002738145666669778
+        },
+        {
+          "i": 1,
+          "j": 3,
+          "value": 0.0013549181925017544
+        },
+        {
+          "i": 1,
+          "j": 4,
+          "value": 1.2705767964833896e-33
+        },
+        {
+          "i": 2,
+          "j": 3,
+          "value": 0.003845379508218334
+        },
+        {
+          "i": 2,
+          "j": 4,
+          "value": 2.5616620085888187e-33
+        },
+        {
+          "i": 3,
+          "j": 4,
+          "value": 6.549967801947484e-34
+        }
+      ],
+      "e_corr_total": -0.00797109181703438,
+      "regression_hash": "e9b2e001930104b5bbe52a12467d88cf50c5422d8dfe8a2875142eeb5c8ff64e",
+      "spec_version": "1.0"
+    },
+    {
+      "molecule_id": "LiH",
+      "basis": "sto-3g",
+      "n_occ": 2,
+      "n_virt": 4,
+      "c_values": [
+        {
+          "i": 0,
+          "j": 1,
+          "value": 3.9268961610488805e-05
+        }
+      ],
+      "e_corr_total": -3.9268961610488805e-05,
+      "regression_hash": "b9d5bd69c20d4c20bc405024034f1742cd498f4cf33820baf50846b84d30b5bb",
+      "spec_version": "1.0"
+    },
+    {
+      "molecule_id": "NH3",
+      "basis": "sto-3g",
+      "n_occ": 5,
+      "n_virt": 3,
+      "c_values": [
+        {
+          "i": 0,
+          "j": 1,
+          "value": 2.680819442333738e-05
+        },
+        {
+          "i": 0,
+          "j": 2,
+          "value": 1.6373375715357074e-05
+        },
+        {
+          "i": 0,
+          "j": 3,
+          "value": 1.6374078396601022e-05
+        },
+        {
+          "i": 0,
+          "j": 4,
+          "value": 1.3480548369558776e-05
+        },
+        {
+          "i": 1,
+          "j": 2,
+          "value": 0.002929237505354273
+        },
+        {
+          "i": 1,
+          "j": 3,
+          "value": 0.0029292039663400475
+        },
+        {
+          "i": 1,
+          "j": 4,
+          "value": 0.0009581839220889278
+        },
+        {
+          "i": 2,
+          "j": 3,
+          "value": 0.0030694544959102366
+        },
+        {
+          "i": 2,
+          "j": 4,
+          "value": 0.0005978271835766069
+        },
+        {
+          "i": 3,
+          "j": 4,
+          "value": 0.0005978939986043716
+        }
+      ],
+      "e_corr_total": -0.011154837268779319,
+      "regression_hash": "3914a9807dcd07f75fc9698a71b111c60ce24323954b7e935529caed2544c1e8",
+      "spec_version": "1.0"
+    }
+  ]
+}

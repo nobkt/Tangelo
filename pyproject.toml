@@ -2,6 +2,7 @@
 # Coverage configuration for DLPNO module (Phase2-Task2.5)
 # Usage: pytest --cov=tangelo.dlpno --cov-report=term-missing (requires pytest-cov)
 # Note: Coverage flags are optional and will be ignored if pytest-cov is not installed
+# Known issue: pytest-cov may have compatibility issues with some scipy versions
 testpaths = ["tests", "tangelo"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]

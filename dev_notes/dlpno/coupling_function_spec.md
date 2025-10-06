@@ -1,6 +1,10 @@
 # DLPNO Pair Coupling Functional C(i,j) Specification (Phase2-Task2.3)
 
-Status: Analytic definition only (no implementation, no thresholds, no approximations)
+Status: **IMPLEMENTED** (Phase2-Task2.4 complete)
+
+Implementation: `tangelo/dlpno/coupling.py`
+Tests: `tangelo/dlpno/tests/test_coupling_functional.py`
+Integration: `tangelo/dlpno/pairs.py` (build_pair_set)
 
 ## 1. Purpose
 
@@ -427,7 +431,35 @@ Compare pyscf-based implementation against psi4 or independent reference:
 - Same molecule, basis set, convergence criteria
 - Verify agreement within numerical precision (ε_tol ~ 1e-10 Hartree)
 
-## 12. Next Task
+## 12. Implementation Status (Phase2-Task2.4)
+
+**Status**: ✅ COMPLETE
+
+**Implementation**:
+- Module: `tangelo/dlpno/coupling.py`
+- Function: `evaluate_coupling_functional(i, j, mo_energies, mo_integrals, n_occ) -> float`
+- Integration: `tangelo/dlpno/pairs.py::build_pair_set()` uses coupling functional for deterministic screening
+
+**Tests** (all passing):
+- File: `tangelo/dlpno/tests/test_coupling_functional.py`
+- ✅ Test 11.1: Symmetry (C(i,j) = C(j,i))
+- ✅ Test 11.2: Non-negativity (C(i,j) ≥ 0)
+- ✅ Test 11.3: Self-null (C(i,i) = 0)
+- ✅ Test 11.4: Pair energy reproduction (H₂O/STO-3G)
+- ✅ Error handling for invalid inputs
+- ✅ Determinism validation
+- ✅ build_pair_set integration tests
+
+**Validation Results**:
+- All mathematical properties verified on H₂O/STO-3G test system
+- No heuristics or approximations (Section 9 compliance verified)
+- Explicit error handling for missing/invalid data
+- Bitwise deterministic behavior confirmed
+
+**Next Phase**:
+- Phase2-Task2.5: Add validation hooks, coverage instrumentation, and advanced regression tests
+
+## 12. Next Task (OBSOLETE - Task2.4 Complete)
 
 **Phase2-Task2.4**: Implementation and Minimal Testing
 

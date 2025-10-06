@@ -27,6 +27,10 @@ from .structures import (
 # Convergence utilities
 from .convergence import ConvergenceMonitor
 
+# Pair screening
+from .pairs import build_pair_set, OccupiedPair, PairSet
+from .coupling import evaluate_coupling_functional
+
 __all__ = [
     # Config constants
     "PNO_TAU_SEQUENCE_DEFAULT",
@@ -41,4 +45,9 @@ __all__ = [
     "default_pno_parameters",
     # Monitor
     "ConvergenceMonitor",
+    # Pair screening
+    "build_pair_set",
+    "OccupiedPair",
+    "PairSet",
+    "evaluate_coupling_functional",
 ]

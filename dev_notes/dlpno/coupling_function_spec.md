@@ -457,7 +457,39 @@ Compare pyscf-based implementation against psi4 or independent reference:
 - Bitwise deterministic behavior confirmed
 
 **Next Phase**:
-- Phase2-Task2.5: Add validation hooks, coverage instrumentation, and advanced regression tests
+- ✅ Phase2-Task2.5: COMPLETE - Regression baseline established with reference dataset and enhanced validation
+
+## 13. Regression Validation Infrastructure (Phase2-Task2.5)
+
+**Status**: ✅ COMPLETE
+
+**Regression Dataset**:
+- File: `tests/data/dlpno_coupling_reference.json`
+- Molecules: H2, H2O, LiH, NH3 (STO-3G basis)
+- Content: Upper-triangular C(i,j) values, total MP2 correlation energy, SHA256 regression hashes
+- Purpose: Detect unintended changes from future optimizations or refactoring
+
+**Test Structure** (all tests passing):
+- `tests/dlpno/test_coupling_core.py`: Core properties (symmetry, non-negativity, self-null, determinism)
+- `tests/dlpno/test_coupling_regression.py`: Reference comparison with hash validation, denominator safety, seed invariance
+- `tests/dlpno/test_coupling_screening.py`: Threshold behavior, error handling for build_pair_set
+- `tests/dlpno/test_coupling_monotonicity.py`: Weak monotonic basis expansion check (STO-3G → 6-31G)
+- `tests/dlpno/util_coupling.py`: Shared utilities (compute_c_matrix, compute_signed_pair_energy, load_reference_dataset)
+
+**Validation Guarantees**:
+- Values match reference within 1e-12 Hartree tolerance
+- SHA256 hash integrity check (warns on mismatch due to PySCF non-determinism, but values must match)
+- Denominator safety test: artificial non-positive denominator triggers ValueError with required signature
+- Seed invariance: results independent of numpy random state
+- Monotonic expansion: C(i,j) increases (or stays similar) with larger basis sets
+
+**Coverage Configuration**:
+- File: `pyproject.toml` ([tool.pytest.ini_options] and [tool.coverage])
+- Usage: `pytest --cov=tangelo.dlpno --cov-report=term-missing`
+- Target: tangelo/dlpno module with branch coverage
+
+**Legacy Tests Removed**:
+- Deprecated: `tangelo/dlpno/tests/test_coupling_functional.py` (replaced by restructured test suite)
 
 ## 12. Next Task (OBSOLETE - Task2.4 Complete)
 

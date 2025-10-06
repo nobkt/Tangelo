@@ -157,7 +157,65 @@ When adding future logic:
 
 ---
 
-## 11. Disclaimer
+## 11. Regression Validation (Phase2-Task2.5)
+
+### 11.1 Reference Dataset
+
+A reference regression dataset is maintained at `tests/data/dlpno_coupling_reference.json` containing baseline C(i,j) coupling functional values and total MP2 correlation energies for small molecules:
+
+- **Molecules**: H2, H2O, LiH, NH3 (all in STO-3G basis)
+- **Data Stored**: Upper-triangular C(i,j) values, total signed MP2 pair correlation energy, SHA256 regression hash
+- **Purpose**: Protect against unintended semantic changes from future performance optimizations, refactoring, or dependency updates
+
+### 11.2 Validation Guarantees
+
+The test suite provides the following correctness guarantees:
+
+1. **Value Accuracy**: Computed C(i,j) values match reference within 1e-12 Hartree tolerance
+2. **Hash Integrity**: SHA256 hash of concatenated double-precision C(i,j) bytes validates bitwise reproducibility (warns on mismatch due to PySCF non-determinism)
+3. **Denominator Safety**: Artificial non-positive energy denominator triggers ValueError with required error signature
+4. **Seed Invariance**: Results are independent of numpy random state
+5. **Basis Monotonicity**: Weak monotonic increase of C(i,j) with virtual space expansion (STO-3G → 6-31G)
+
+### 11.3 Test Organization
+
+Tests are organized by concern:
+
+- `tests/dlpno/test_coupling_core.py`: Fundamental mathematical properties (symmetry, non-negativity, self-null, determinism)
+- `tests/dlpno/test_coupling_regression.py`: Reference dataset comparison, hash validation, denominator safety
+- `tests/dlpno/test_coupling_screening.py`: Pair screening threshold behavior, error handling
+- `tests/dlpno/test_coupling_monotonicity.py`: Basis set expansion monotonicity checks
+
+Shared utilities are in `tests/dlpno/util_coupling.py` (compute_c_matrix, compute_signed_pair_energy, load_reference_dataset).
+
+### 11.4 Coverage Instrumentation
+
+Coverage configuration is available in `pyproject.toml`:
+
+```bash
+# Run tests with coverage
+pytest --cov=tangelo.dlpno --cov-report=term-missing
+
+# Run only DLPNO tests with coverage
+pytest tests/dlpno/ --cov=tangelo.dlpno --cov-report=html
+```
+
+Target: `tangelo/dlpno` module with branch coverage enabled.
+
+### 11.5 Regenerating Reference Data
+
+If algorithmic changes require updating the baseline (e.g., integral convention change):
+
+1. Update the generation script logic
+2. Regenerate reference data with the updated script
+3. Verify all tests pass with new baseline
+4. Document the change in commit message and spec
+
+**Important**: Reference data updates must be deliberate and documented. Accidental changes will be caught by CI.
+
+---
+
+## 12. Disclaimer
 
 This scaffold does not perform any quantum chemistry calculations yet. It is a structural and testing foundation only.
 
